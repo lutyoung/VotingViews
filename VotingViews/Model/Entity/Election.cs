@@ -11,8 +11,6 @@ namespace VotingViews.Model.Entity
         public Guid Code { get; set; }
         public string Status { get; set; }
 
-        public IList<Position> Positions = new List<Position>();
-
-        public IEnumerable<Vote> Votes = new List<Vote>();
+        public ICollection<Position> Positions { get; set; } = new HashSet<Position>();
     }
 }

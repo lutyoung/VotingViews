@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using VotingViews.Context;
 using VotingViews.Domain.IService;
 using VotingViews.DTOs;
+using VotingViews.Model.Entity;
 using VotingViews.Models;
 
 namespace VotingViews.Controllers
@@ -16,76 +18,136 @@ namespace VotingViews.Controllers
     public class VoterController : Controller
     {
         private readonly IVoterService _service;
+        private readonly ApplicationContext _context;
+        private readonly IElectionService _election;
+        private readonly IPositionService _position;
+        private readonly IContestantService _contestant;
 
-        public VoterController(IVoterService service)
+        public VoterController(IVoterService service, ApplicationContext context, IElectionService election, IPositionService position, IContestantService contestant)
         {
             _service = service;
+            _context = context;
+            _election = election;
+            _position = position;
+            _contestant = contestant;
         }
 
-
-
-        public IActionResult DashBoard(int userId)
+        public IActionResult Index()
         {
-            //int userId =int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty);
-
-            var voter = _service.GetVoterFullDetailsById(userId);
-
-            var model = new Dashboard
-            {
-            };
+            var model = _service.GetAll();
             return View(model);
         }
 
-        public IActionResult Profile(int userId)
+        [Authorize(Roles = "voter")]
+        public IActionResult DashBoard()
         {
-            //int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
 
-            var voter = _service.GetVoterFullDetailsById(userId);
-            var model = new Profile
-            {
-                FirstName = voter.FirstName,
-                LastName = voter.LastName,
-                MiddleName = voter.MiddleName,
-                Email = voter.Email,
-                Address = voter.Address
-            };
-            return View(model);
+            return View();
         }
 
+        [Authorize(Roles = "voter")]
+        [Authorize]
+        public IActionResult Election(Guid code)
+        {
+
+            var election = _position.GetPositionByElectionCode(code);
+            return View(election);
+        }
 
         [HttpGet]
-        public IActionResult Update(int userId)
+        public IActionResult Delete(int? id)
         {
-            //int userId = Int16.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
-
-            var voter = _service.GetVoterFullDetailsById(userId);
-            var model = new Profile
+            if (id == null)
             {
-                FirstName = voter.FirstName,
-                LastName = voter.LastName,
-                MiddleName = voter.MiddleName,
-                Email = voter.Email,
-                Address = voter.Address
-            };
+                return NotFound();
+            }
+
+            var model = _service.FindById(id.Value);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
             return View(model);
         }
 
-        [HttpPost]
-        public IActionResult Update(Profile model)
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
         {
-            int userId = Int16.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
 
-            UpdateVoterDto updateVoterDto = new UpdateVoterDto
+            _service.DeleteVoter(id);
+            return RedirectToAction("Index", "Voter");
+        }
+
+        [Authorize(Roles = "voter")]
+        [HttpGet]
+        public IActionResult VoterVote(int? id)
+        {
+            var position = _contestant.GetContestantByPositionName(id.Value);
+            return View(position);
+        }
+
+        [Authorize(Roles = "voter")]
+        public IActionResult Vote(int id)
+        {
+            var loggedInUserEmail = User.FindFirst(ClaimTypes.Name).Value;
+            
+
+            _contestant.VoteContestant(id, loggedInUserEmail);
+            return RedirectToAction("Election", "Voter");
+        }
+
+        [Authorize(Roles = "admin")]
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                MiddleName = model.MiddleName,
-                Address = model.Address
-            };
+                return NotFound();
+            }
 
-            _service.UpdateVoter(updateVoterDto, userId);
+            var voter = _service.FindById(id.Value);
+            if (voter == null)
+            {
+                return NotFound();
+            }
 
-            return RedirectToAction(nameof(Profile));
+            return View(voter);
+        }
+
+        [Authorize(Roles ="voter")]
+        public IActionResult Profile()
+        {
+            var email = User.FindFirst(ClaimTypes.Name).Value;
+            var voter = _service.FindByEmail(email);
+            return View(voter);
+        }
+
+        [Authorize(Roles = "voter")]
+        [HttpGet]
+        public IActionResult Update()
+        {
+            var email = User.FindFirst(ClaimTypes.Name).Value;
+            var update = _service.FindByEmail(email);
+            return View(update);
+        }
+        [Authorize(Roles = "voter")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(int id, Voter voter)
+        {
+            if (id != voter.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _service.Update(voter);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(voter);
         }
 
         [HttpPost]

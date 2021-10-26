@@ -19,9 +19,19 @@ namespace VotingViews.Domain.Repository
             _context = context;
         }
 
+        public Voter FindbyId(int id)
+        {
+            return _context.Voters.SingleOrDefault(a => a.Id == id);
+        }
+
+        public Voter FindByEmail(string email)
+        {
+            return _context.Voters.SingleOrDefault(a => a.Email == email);
+        }
+
         public Voter FindByUserId(int userid)
         {
-            return _context.Voters.FirstOrDefault(i => i.UserId == userid);
+            return  _context.Voters.SingleOrDefault(i => i.UserId == userid);
         }
 
         public Voter AddVoter(Voter voter)
@@ -43,18 +53,16 @@ namespace VotingViews.Domain.Repository
             _context.SaveChanges();
         }
 
-        public Voter UpdateVoter(Voter voter)
+        public bool Exists(int id)
+        {
+            return _context.Voters.Any(e => e.Id == id);
+        }
+
+        public Voter Update(Voter voter)
         {
             _context.Voters.Update(voter);
             _context.SaveChanges();
             return voter;
-        }
-
-        public Voter GetVoterDetailsById(int id)
-        {
-            return _context.Voters
-                .Include(i => i.User)
-                .FirstOrDefault(i => i.UserId == id);
         }
     }
 }

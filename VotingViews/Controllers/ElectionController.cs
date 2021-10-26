@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VotingViews.Context;
 using VotingViews.Domain.IService;
 using VotingViews.DTOs;
 using VotingViews.Model.Entity;
@@ -15,19 +18,22 @@ namespace VotingViews.Controllers
     public class ElectionController : Controller
     {
         private readonly IElectionService _service;
+        private readonly ApplicationContext _context;
 
-        public ElectionController(IElectionService service)
+        public ElectionController(IElectionService service, ApplicationContext context)
         {
             _service = service;
+            _context = context;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-
             var model = _service.GetAllElections();
             return View(model);
         }
+
+       
 
         [HttpGet]
         public IActionResult Create()
@@ -83,7 +89,7 @@ namespace VotingViews.Controllers
             if (ModelState.IsValid)
             {
                 _service.UpdateElection(update, id);
-                return RedirectToAction(nameof(Details));
+                return RedirectToAction("Index", "Election");
             }
             return View(model);
         }

@@ -12,6 +12,5 @@ namespace VotingViews.DTOs
         public string LastName { get; set; }
         public string Email { get; set; }
 
-        public int PositionId { get; set; }
     }
 }

@@ -19,31 +19,24 @@ namespace VotingViews.Domain.Service
             _voter = voter;
         }
 
-        public Voter AddVoter(Voter voter)
+        public Voter Update(Voter voter) => _voter.Update(voter);
+
+        public List<Voter> GetAll() => _voter.GetAll();
+
+        public Voter AddVoter(Voter voter) => _voter.AddVoter(voter);
+
+        public bool  Exists(int id) => _voter.Exists(id);
+
+        public Voter GetVoterByUserId(int userId) => _voter.FindByUserId(userId);
+
+        public Voter FindById(int id) => _voter.FindbyId(id);
+
+        public Voter FindByEmail(string email) => _voter.FindByEmail(email);
+
+        public void DeleteVoter(int id)
         {
-            return _voter.AddVoter(voter);
+            _voter.DeleteVoter(id);
         }
 
-        public Voter GetVoter(int userId)
-        {
-            return _voter.FindByUserId(userId);
-        }
-
-        public Voter GetVoterFullDetailsById(int voterId)
-        {
-            return _voter.GetVoterDetailsById(voterId);
-        }
-
-        public Voter UpdateVoter(UpdateVoterDto updateVoterDto, int userId)
-        {
-            var voter = _voter.FindByUserId(userId);
-            voter.FirstName = updateVoterDto.FirstName;
-            voter.LastName = updateVoterDto.LastName;
-            voter.MiddleName = updateVoterDto.MiddleName;
-            voter.Address = updateVoterDto.Address;
-
-            _voter.UpdateVoter(voter);
-            return voter;
-        }
     }
 }

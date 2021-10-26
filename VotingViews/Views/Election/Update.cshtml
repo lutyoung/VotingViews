@@ -1,7 +1,7 @@
 ﻿@model VotingViews.Model.Entity.Election
 
 @{
-    ViewData["Title"] = "Update";
+    ViewData["pageTitle"] = "Update";
     Layout = "_DashboardLayoutAdmin";
 }
 
@@ -27,13 +27,14 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

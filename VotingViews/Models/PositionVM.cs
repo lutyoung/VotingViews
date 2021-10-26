@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using VotingViews.Model.Entity;
 
 namespace VotingViews.Models
 {
@@ -13,8 +16,16 @@ namespace VotingViews.Models
 
     public class CreatePosition
     {
+        public int Id { get; set; }
+        [Required]
+        [Display(Name = "Position Name")]
         public string Name { get; set; }
-        public int ElectrionId { get; set; }
+
+        [Required]
+        [Display(Name = "Election")]
+        public Election Election { get; set; }
+        public int ElectionId { get; set; }
+        public IEnumerable<SelectListItem> Elections { get; set; }
 
     }
 

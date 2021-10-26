@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VotingViews.Domain.IRepository;
 using VotingViews.Domain.IService;
@@ -18,19 +19,16 @@ namespace VotingViews.Domain.Service
             _election = election;
         }
 
-        public CreatedPositionDto AddPosition(CreatePositionDto model)
+        public Position AddPosition(Position model)
         {
-            Position newPosition = new Position
-            {
-                Name = model.Name,
-                ElectionId = model.ElectionId
-            };
 
-            var position = _position.AddPosition(newPosition);
-            return new CreatedPositionDto
-            {
-                Id = position.Id
-            };
+            var position = _position.AddPosition(model);
+            return position;
+        }
+
+        public List<Position> GetPositionByElectionCode(Guid code)
+        {
+            return _position.GetPositionByElectionCode(code);
         }
 
         public IEnumerable<Position> GetPositionByElectionId(int electionId)
@@ -63,7 +61,8 @@ namespace VotingViews.Domain.Service
         {
             var position = _position.FindPositionById(id);
 
-            position.Name = model.Name;
+                position.Name = model.Name;
+           
 
             _position.UpdatePosition(position);
             return position;

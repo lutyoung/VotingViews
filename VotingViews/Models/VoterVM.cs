@@ -12,6 +12,7 @@ namespace VotingViews.Models
 
     public class Profile
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -28,7 +29,7 @@ namespace VotingViews.Models
 
     public class Dashboard
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
 
     }
 

@@ -1,7 +1,8 @@
-﻿<!Doctype html>
+﻿
+<!Doctype html>
 <html lang="en">
 <head>
-    <title>DashBoard</title>
+    <title>@ViewData["pageTitle"] - VotingViews</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -14,15 +15,15 @@
 
     <div class="wrapper d-flex align-items-stretch">
 
-        <partial name="_DashboardSideBarVoter" />
+        
 
         <!-- Page Content  -->
         <div id="content" class="p-4 p-md-5">
 
-            <partial name="_DashboardTopBarAdmin" />
+            <partial name="_DashboardTopBarVoter" />
 
             <h4 class="mb-4">@ViewData["pageTitle"]</h4>
-
+            
             @RenderBody()
 
         </div>

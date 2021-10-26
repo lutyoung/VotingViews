@@ -7,5 +7,6 @@ namespace VotingViews.DTOs
 {
     public class CreatedContestant
     {
+        public int Id { get; set; }
     }
 }

@@ -33,8 +33,10 @@ namespace VotingViews
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationContext>(options =>
                    options.UseMySQL(Configuration.GetConnectionString("ApplicationContext")));
+
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IAdminService, AdminService>();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(config =>
                 {
@@ -42,16 +44,24 @@ namespace VotingViews
                     config.LogoutPath = "/Auth/Logout";
                     config.Cookie.Name = "VotingViews";
                 });
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoleService, RoleService>();
+
             services.AddScoped<IElectionRepository, ElectionRepository>();
             services.AddScoped<IElectionService, ElectionService>();
+
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<IPositionService, PositionService>();
+
             services.AddScoped<IVoterRepository, VoterRepository>();
             services.AddScoped<IVoterService, VoterService>();
+
+            services.AddScoped<IContestantRepository, ContestantRepository>();
+            services.AddScoped<IContestantService, ContestantService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +81,8 @@ namespace VotingViews
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

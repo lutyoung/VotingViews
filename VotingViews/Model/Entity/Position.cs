@@ -9,10 +9,8 @@ namespace VotingViews.Model.Entity
     {
         public string Name { get; set; }
         public Election Election { get; set; }
-        public int ElectionId { get; set; }
+        public int? ElectionId { get; set; }
 
-        public IList<Contestant> Contestants = new List<Contestant>();
-
-        public IEnumerable<Vote> Votes = new List<Vote>();
+        public ICollection<Contestant> Contestants { get; set; } = new HashSet<Contestant>();
     }
 }

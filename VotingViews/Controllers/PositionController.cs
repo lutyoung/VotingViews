@@ -32,24 +32,26 @@ namespace VotingViews.Controllers
             return View(model);
         }
 
-        [HttpGet("Position/{electionId}")]
-        public IActionResult Create([FromRoute] int electionId)
+        [HttpGet]
+        public IActionResult Create(/*[FromRoute] int? id*/)
         {
-            
+            List<Election> elections = _election.GetAllElections();
+            List<SelectListItem> listElections = new List<SelectListItem>();
+            foreach(Election election in elections)
+            {
+                SelectListItem item = new SelectListItem(election.Name, election.Id.ToString());
+                listElections.Add(item);
+            }
+            ViewBag.Elections = listElections;
             return View();
         }
 
-        [HttpPost("position/electionId")]
-        public IActionResult Create(CreatePosition model, [FromRoute]int electionId)
+        [HttpPost]
+        public IActionResult Create(Position model)
         {
-            CreatePositionDto create = new CreatePositionDto
-            {
-                Name = model.Name,
-                ElectionId =electionId
-            };
             if (ModelState.IsValid)
             {
-                _position.AddPosition(create);
+                _position.AddPosition(model);
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
@@ -85,7 +87,7 @@ namespace VotingViews.Controllers
             if (ModelState.IsValid)
             {
                 _position.UpdatePosition(update, id);
-                return RedirectToAction("Details", "Position");
+                return RedirectToAction("Index", "Position");
             }
             return View(model);
         }
@@ -105,6 +107,17 @@ namespace VotingViews.Controllers
             }
 
             return View(details);
+        }
+
+        [HttpPost]
+        public IActionResult Details(int id, Position position)
+        {
+            _position.GetPositionById(id);
+            PositionVM model = new PositionVM
+            {
+                Name = position.Name
+            };
+            return View(model);
         }
 
         [HttpGet]

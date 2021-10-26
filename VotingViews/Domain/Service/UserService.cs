@@ -74,6 +74,8 @@ namespace VotingViews.Domain.Service
                     UserId = user.Id,
                     FirstName = userDetails.FirstName,
                     LastName = userDetails.LastName,
+                    Email = userDetails.Email,
+                    Password = userDetails.Password,
                     MiddleName = userDetails.MiddleName,
                     Address = userDetails.Address
                 };

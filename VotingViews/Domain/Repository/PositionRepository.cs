@@ -21,7 +21,7 @@ namespace VotingViews.Domain.Repository
 
         public Position AddPosition(Position position)
         {
-            _context.Set<Position>().Add(position);
+            _context.Positions.Add(position);
             _context.SaveChanges();
             return position;
         }
@@ -38,6 +38,13 @@ namespace VotingViews.Domain.Repository
             return _context.Positions.Find(id);
         }
 
+        public List<Position> GetPositionByElectionCode(Guid code)
+        {
+            var positions = _context.Positions.Include(p=>p.Election)
+                .Where(p => p.Election.Code == code).ToList();
+            return positions;
+        }
+
         public Position FindPositionByName(string name)
         {
             return _context.Positions.Find(name);
@@ -45,7 +52,8 @@ namespace VotingViews.Domain.Repository
 
         public List<Position> GetAll()
         {
-            return _context.Positions.ToList();
+            var positions = _context.Positions.ToList();
+            return positions;
         }
 
         public Position UpdatePosition(Position position)

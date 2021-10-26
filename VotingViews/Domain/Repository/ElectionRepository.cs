@@ -28,24 +28,26 @@ namespace VotingViews.Domain.Repository
 
         public void DeleteElection(int id)
         {
-            Election election = _context.Elections.Find(id);
+            Election election = _context.Elections.FirstOrDefault(e=>e.Id ==id);
             _context.Elections.Remove(election);
             _context.SaveChanges();
         }
 
         public Election FindByCode(Guid code)
         {
-            return _context.Elections.Find(code);
+            return _context.Elections
+                .FirstOrDefault(c => c.Code == code);
         }
 
         public Election FindbyId(int id)
         {
-            return _context.Elections.Find(id);
+            return _context.Elections.FirstOrDefault(a=>a.Id == id);
         }
 
         public List<Election> GetAll()
         {
-            return _context.Elections.ToList();
+            var elections = _context.Elections.ToList();
+            return elections;
         }
 
         public Election UpdateElection(Election election)

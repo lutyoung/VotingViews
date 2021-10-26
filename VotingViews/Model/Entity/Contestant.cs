@@ -5,17 +5,24 @@ using System.Threading.Tasks;
 
 namespace VotingViews.Model.Entity
 {
-    public class Contestant
+    public class Contestant : BaseEntity
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
+
         public string MiddleName { get; set; }
+
         public string LastName { get; set; }
+
         public string Email { get; set; }
 
-        public Position Position { get; set; }
-        public int PositionId { get; set; }
+        public string Gender { get; set; }
 
-        public IEnumerable<Vote> Votes = new List<Vote>();
+        public string FullName => $"{FirstName} {MiddleName.Substring(0, 1)}. {LastName}";
+
+        public int ConestantVote { get; set; }
+
+        public Position Position { get; set; }
+
+        public int PositionId { get; set; }
     }
 }

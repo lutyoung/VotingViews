@@ -88,24 +88,28 @@ namespace VotingViews.Controllers
 
             if(user != null)
             {
-                string fullName = String.Empty;
+                string emailName = string.Empty;
+                string name = string.Empty;
 
                 switch (user.Role.Name)
                 {
                     case "voter":
-                        var voter = _voterService.GetVoter(user.Id);
-                        fullName = $"{voter.FirstName} {voter.LastName}";
+                         var voter = _voterService.GetVoterByUserId(user.Id);
+                        emailName = $"{voter.Email}";
+                        name = $"{voter.FirstName} {voter.MiddleName.Substring(0, 1)}.{voter.LastName}";
                         break;
                     case "admin":
                         var admin = _adminService.GetAdmin(user.Id);
-                        fullName = $"{admin.FirstName} {admin.LastName}";
+                        emailName = $"{admin.Email}";
+                        name = $"{admin.FirstName} {admin.MiddleName.Substring(0, 1)}.{admin.LastName}";
                         break;
                 }
 
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, fullName),
+                    new Claim(ClaimTypes.Name, emailName),
+                    new Claim(ClaimTypes.GivenName, name),
                     new Claim(ClaimTypes.Role, user.Role.Name),
                 };
 

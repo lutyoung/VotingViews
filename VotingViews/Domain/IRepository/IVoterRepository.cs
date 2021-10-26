@@ -9,7 +9,11 @@ namespace VotingViews.Domain.IRepository
 {
     public interface IVoterRepository
     {
-        public Voter FindByUserId(int userId);
+        public Voter FindbyId(int id);
+
+        public Voter FindByEmail(string email);
+
+        public Voter FindByUserId(int userid);
 
         public Voter AddVoter(Voter voter);
 
@@ -17,8 +21,8 @@ namespace VotingViews.Domain.IRepository
 
         public void DeleteVoter(int id);
 
-        public Voter UpdateVoter(Voter voter);
+        public bool Exists(int id);
 
-        public Voter GetVoterDetailsById(int id);
+        public Voter Update(Voter voter);
     }
 }

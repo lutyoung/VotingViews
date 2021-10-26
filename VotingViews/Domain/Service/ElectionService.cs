@@ -37,7 +37,18 @@ namespace VotingViews.Domain.Service
 
         public Election GetElectionByCode(Guid code)
         {
-            return _election.FindByCode(code);
+            var election = _election.FindByCode(code);
+            return new Election
+            {
+                Name = election.Name,
+                Code = election.Code,
+                Status = election.Status,
+                Positions = election.Positions.Select(c => new Position()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                }).ToList()
+            };
         }
 
         public Election GetElectionById(int id)

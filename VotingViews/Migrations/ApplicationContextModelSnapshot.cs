@@ -58,10 +58,16 @@ namespace VotingViews.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("ConestantVote")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Gender")
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
@@ -73,9 +79,14 @@ namespace VotingViews.Migrations
                     b.Property<int>("PositionId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("VoterId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PositionId");
+
+                    b.HasIndex("VoterId");
 
                     b.ToTable("Contestants");
                 });
@@ -107,7 +118,7 @@ namespace VotingViews.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ElectionId")
+                    b.Property<int?>("ElectionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -159,37 +170,6 @@ namespace VotingViews.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("VotingViews.Model.Entity.Vote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("ContestantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ElectionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PositionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VoterId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContestantId");
-
-                    b.HasIndex("ElectionId");
-
-                    b.HasIndex("PositionId");
-
-                    b.HasIndex("VoterId");
-
-                    b.ToTable("Votes");
-                });
-
             modelBuilder.Entity("VotingViews.Model.Entity.Voter", b =>
                 {
                     b.Property<int>("Id")
@@ -237,19 +217,21 @@ namespace VotingViews.Migrations
             modelBuilder.Entity("VotingViews.Model.Entity.Contestant", b =>
                 {
                     b.HasOne("VotingViews.Model.Entity.Position", "Position")
-                        .WithMany()
+                        .WithMany("Contestants")
                         .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("VotingViews.Model.Entity.Voter", null)
+                        .WithMany("VotedContestants")
+                        .HasForeignKey("VoterId");
                 });
 
             modelBuilder.Entity("VotingViews.Model.Entity.Position", b =>
                 {
                     b.HasOne("VotingViews.Model.Entity.Election", "Election")
-                        .WithMany()
-                        .HasForeignKey("ElectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Positions")
+                        .HasForeignKey("ElectionId");
                 });
 
             modelBuilder.Entity("VotingViews.Model.Entity.User", b =>
@@ -257,33 +239,6 @@ namespace VotingViews.Migrations
                     b.HasOne("VotingViews.Model.Entity.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("VotingViews.Model.Entity.Vote", b =>
-                {
-                    b.HasOne("VotingViews.Model.Entity.Contestant", "Contestant")
-                        .WithMany()
-                        .HasForeignKey("ContestantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VotingViews.Model.Entity.Election", "Election")
-                        .WithMany()
-                        .HasForeignKey("ElectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VotingViews.Model.Entity.Position", "Position")
-                        .WithMany()
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VotingViews.Model.Entity.Voter", "Voter")
-                        .WithMany()
-                        .HasForeignKey("VoterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
