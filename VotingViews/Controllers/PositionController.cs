@@ -33,7 +33,7 @@ namespace VotingViews.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create(/*[FromRoute] int? id*/)
+        public IActionResult Create()
         {
             List<Election> elections = _election.GetAllElections();
             List<SelectListItem> listElections = new List<SelectListItem>();
@@ -62,7 +62,7 @@ namespace VotingViews.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var update = _position.GetPositionById(id.Value);
@@ -76,10 +76,6 @@ namespace VotingViews.Controllers
         [HttpPost]
         public IActionResult Update(int id, UpdatePosition model)
         {
-            if (id != model.Id)
-            {
-                return NotFound();
-            }
             UpdatePositionDto update = new UpdatePositionDto
             {
                 Name = model.Name
@@ -97,7 +93,7 @@ namespace VotingViews.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var details = _position.GetPositionById(id.Value);
