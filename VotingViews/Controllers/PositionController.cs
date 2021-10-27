@@ -12,7 +12,7 @@ using VotingViews.Models;
 
 namespace VotingViews.Controllers
 {
-    
+    [Authorize(Roles ="admin")]
     public class PositionController : Controller
     {
         private readonly IPositionService _position;
@@ -33,7 +33,7 @@ namespace VotingViews.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create(/*[FromRoute] int? id*/)
+        public IActionResult Create()
         {
             List<Election> elections = _election.GetAllElections();
             List<SelectListItem> listElections = new List<SelectListItem>();

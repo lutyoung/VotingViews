@@ -163,3 +163,4 @@ C:\Users\user\source\repos\VotingViews\VotingViews\obj\Debug\net5.0\Razor\Views\
 C:\Users\user\source\repos\VotingViews\VotingViews\obj\Debug\net5.0\Razor\Views\Voter\Details.cshtml.g.cs
 C:\Users\user\source\repos\VotingViews\VotingViews\obj\Debug\net5.0\Razor\Views\Voter\Profile.cshtml.g.cs
 C:\Users\user\source\repos\VotingViews\VotingViews\obj\Debug\net5.0\Razor\Views\Shared\_DashboardTopBarVoter.cshtml.g.cs
+C:\Users\user\source\repos\VotingViews\VotingViews\obj\Debug\net5.0\Razor\Views\Voter\Update.cshtml.g.cs
