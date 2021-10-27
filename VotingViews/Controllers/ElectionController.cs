@@ -61,7 +61,7 @@ namespace VotingViews.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var update = _service.GetElectionById(id.Value);
@@ -75,10 +75,6 @@ namespace VotingViews.Controllers
         [HttpPost]
         public IActionResult Update(int id, UpdateElectionVM model)
         {
-            if (id != model.Id)
-            {
-                return NotFound();
-            }
 
             UpdateElectionDto update = new UpdateElectionDto
             {
@@ -99,7 +95,7 @@ namespace VotingViews.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var election = _service.GetElectionById(id.Value);
@@ -111,23 +107,12 @@ namespace VotingViews.Controllers
             return View(election);
         }
 
-        public IActionResult Details(int id , Election election)
-        {
-             _service.GetElectionById(id);
-            ElectionVM model = new ElectionVM
-            {
-                Name = election.Name,
-                Status = election.Status,
-                Code = election.Code
-            };
-            return View(model);
-        }
 
         public IActionResult Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var model = _service.GetElectionById(id.Value);
