@@ -14,7 +14,7 @@ using VotingViews.Models;
 
 namespace VotingViews.Controllers
 {
-    
+    [Authorize(Roles ="admin")]
     public class ElectionController : Controller
     {
         private readonly IElectionService _service;

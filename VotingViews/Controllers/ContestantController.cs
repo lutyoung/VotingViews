@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using VotingViews.Models;
 
 namespace VotingViews.Controllers
 {
+    [Authorize(Roles="admin")]
     public class ContestantController : Controller
     {
         private readonly IContestantService _contestant;
