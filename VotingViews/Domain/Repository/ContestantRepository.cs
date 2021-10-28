@@ -36,7 +36,7 @@ namespace VotingViews.Domain.Repository
         public List<Contestant> GetContestantByPositionName(int id)
         {
             var contestant = _context.Contestants.Include(c => c.Position)
-                .Where(c => c.Position.Id == id).ToList();
+                .Where(c => c.Position.Id ==  id).ToList();
             return contestant;
         }
 
