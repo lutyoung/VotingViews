@@ -12,7 +12,7 @@ namespace VotingViews.Domain.IService
     {
         public CreatedElectionDto AddElection(CreateElectionDto election);
 
-        public Election GetElectionByCode(Guid code);
+        public ElectionDto GetElectionByCode(Guid code);
 
         public Election GetElectionById(int id);
 
