@@ -35,10 +35,10 @@ namespace VotingViews.Domain.Service
             };
         }
 
-        public Election GetElectionByCode(Guid code)
+        public ElectionDto GetElectionByCode(Guid code)
         {
             var election = _election.FindByCode(code);
-            return new Election
+            return new ElectionDto
             {
                 Name = election.Name,
                 Code = election.Code,
@@ -67,6 +67,8 @@ namespace VotingViews.Domain.Service
 
             election.Name = update.Name;
             election.Status = update.Status;
+            election.StartDate = update.StartDate;
+            election.EndDate = update.EndDate;
 
             _election.UpdateElection(election);
             return election;

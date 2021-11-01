@@ -59,7 +59,7 @@ namespace VotingViews.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var model = _service.FindById(id.Value);
@@ -104,7 +104,7 @@ namespace VotingViews.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var voter = _service.FindById(id.Value);
@@ -137,10 +137,6 @@ namespace VotingViews.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update(int id, Voter voter)
         {
-            if (id != voter.Id)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {

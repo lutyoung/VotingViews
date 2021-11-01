@@ -65,7 +65,7 @@ namespace VotingViews.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var update = _contestant.GetContestantById(id.Value);
@@ -78,10 +78,6 @@ namespace VotingViews.Controllers
         [HttpPost]
         public IActionResult Update(UpdateContestant model, int id)
         {
-            if (id != model.Id)
-            {
-                return NotFound();
-            }
 
             UpdateContestantDto contestantDto = new UpdateContestantDto
             {
@@ -134,7 +130,7 @@ namespace VotingViews.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var model = _contestant.GetContestantById(id.Value);
